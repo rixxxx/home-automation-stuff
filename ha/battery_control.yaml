@@ -47,10 +47,7 @@ action:
             target:
               entity_id: number.inverter_battery_max_charge_current
             data:
-              value: >-
-                {{
-                ([(states('sensor.p_batt_forecast')|float(0)|abs/410)|round(0,'ceil'),37]|sort)[0]
-                }}
+              value: 37
           - service: select.select_option
             target:
               entity_id:
@@ -63,7 +60,7 @@ action:
                 - select.inverter_load_limit
             data:
               option: Zero Export
-        alias: Grid Charge
+        alias: PV Charge
       - conditions:
           - condition: numeric_state
             entity_id: sensor.p_batt_forecast
@@ -98,7 +95,10 @@ action:
             target:
               entity_id: number.inverter_battery_max_charge_current
             data:
-              value: 37
+              value: >-
+                {{
+                ([(states('sensor.p_batt_forecast')|float(0)|abs/410)|round(0,'ceil'),37]|sort)[0]
+                }}
           - service: select.select_option
             target:
               entity_id:
