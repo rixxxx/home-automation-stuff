@@ -1,0 +1,338 @@
+alias: "BATT: control"
+description: ""
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.p_batt_forecast
+  - platform: state
+    entity_id:
+      - sensor.p_grid_forecast
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            below: -1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            below: 1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            above: -1
+        sequence:
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_prog1_charge
+                - select.inverter_prog2_charge
+                - select.inverter_prog3_charge
+                - select.inverter_prog4_charge
+                - select.inverter_prog5_charge
+                - select.inverter_prog6_charge
+            data:
+              option: No Grid or Gen
+          - service: number.set_value
+            target:
+              entity_id:
+                - number.inverter_prog1_capacity
+                - number.inverter_prog2_capacity
+                - number.inverter_prog3_capacity
+                - number.inverter_prog4_capacity
+                - number.inverter_prog5_capacity
+                - number.inverter_prog6_capacity
+            data:
+              value: "100"
+          - service: number.set_value
+            target:
+              entity_id: number.inverter_battery_max_charge_current
+            data:
+              value: 37
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_grid_peak_shaving
+            data:
+              option: Enable
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_load_limit
+            data:
+              option: Zero Export
+        alias: Grid Charge
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            below: -1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            above: 1
+        sequence:
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_prog1_charge
+                - select.inverter_prog2_charge
+                - select.inverter_prog3_charge
+                - select.inverter_prog4_charge
+                - select.inverter_prog5_charge
+                - select.inverter_prog6_charge
+            data:
+              option: Allow Grid
+          - service: number.set_value
+            target:
+              entity_id:
+                - number.inverter_prog1_capacity
+                - number.inverter_prog2_capacity
+                - number.inverter_prog3_capacity
+                - number.inverter_prog4_capacity
+                - number.inverter_prog5_capacity
+                - number.inverter_prog6_capacity
+            data:
+              value: "100"
+          - service: number.set_value
+            target:
+              entity_id: number.inverter_battery_max_charge_current
+            data:
+              value: >-
+                {{
+                ([(states('sensor.p_batt_forecast')|float(0)|abs/410)|round(0,'ceil'),37]|sort)[0]
+                }}
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_grid_peak_shaving
+            data:
+              option: Enable
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_load_limit
+            data:
+              option: Zero Export
+        alias: PV Charge
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            above: -1
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            below: 1
+        sequence:
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_prog1_charge
+                - select.inverter_prog2_charge
+                - select.inverter_prog3_charge
+                - select.inverter_prog4_charge
+                - select.inverter_prog5_charge
+                - select.inverter_prog6_charge
+            data:
+              option: No Grid or Gen
+          - service: number.set_value
+            data:
+              value: "100"
+            target:
+              entity_id:
+                - number.inverter_prog1_capacity
+                - number.inverter_prog2_capacity
+                - number.inverter_prog3_capacity
+                - number.inverter_prog4_capacity
+                - number.inverter_prog5_capacity
+                - number.inverter_prog6_capacity
+          - service: number.set_value
+            target:
+              entity_id: number.inverter_battery_max_charge_current
+            data:
+              value: 37
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_grid_peak_shaving
+            data:
+              option: Enable
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_load_limit
+            data:
+              option: Zero Export
+        alias: Idle
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            above: 1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            above: 1
+        sequence:
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_prog1_charge
+                - select.inverter_prog2_charge
+                - select.inverter_prog3_charge
+                - select.inverter_prog4_charge
+                - select.inverter_prog5_charge
+                - select.inverter_prog6_charge
+            data:
+              option: No Grid or Gen
+          - service: number.set_value
+            data:
+              value: "13"
+            target:
+              entity_id:
+                - number.inverter_prog1_capacity
+                - number.inverter_prog2_capacity
+                - number.inverter_prog3_capacity
+                - number.inverter_prog4_capacity
+                - number.inverter_prog5_capacity
+                - number.inverter_prog6_capacity
+          - service: number.set_value
+            target:
+              entity_id:
+                - number.inverter_prog1_power
+                - number.inverter_prog2_power
+                - number.inverter_prog3_power
+                - number.inverter_prog4_power
+                - number.inverter_prog5_power
+                - number.inverter_prog6_power
+            data:
+              value: "{{ states('sensor.p_batt_forecast')|float(0)|abs }}"
+          - service: number.set_value
+            target:
+              entity_id: number.inverter_battery_max_charge_current
+            data:
+              value: 37
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_grid_peak_shaving
+            data:
+              option: Enable
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_load_limit
+            data:
+              option: Zero Export
+        alias: Limited use
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            above: 1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            below: 1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            above: -1
+        sequence:
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_prog1_charge
+                - select.inverter_prog2_charge
+                - select.inverter_prog3_charge
+                - select.inverter_prog4_charge
+                - select.inverter_prog5_charge
+                - select.inverter_prog6_charge
+            data:
+              option: No Grid or Gen
+          - service: number.set_value
+            data:
+              value: "13"
+            target:
+              entity_id:
+                - number.inverter_prog1_capacity
+                - number.inverter_prog2_capacity
+                - number.inverter_prog3_capacity
+                - number.inverter_prog4_capacity
+                - number.inverter_prog5_capacity
+                - number.inverter_prog6_capacity
+          - service: number.set_value
+            target:
+              entity_id:
+                - number.inverter_prog1_power
+                - number.inverter_prog2_power
+                - number.inverter_prog3_power
+                - number.inverter_prog4_power
+                - number.inverter_prog5_power
+                - number.inverter_prog6_power
+            data:
+              value: 20000
+          - service: number.set_value
+            target:
+              entity_id: number.inverter_battery_max_charge_current
+            data:
+              value: 37
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_grid_peak_shaving
+            data:
+              option: Enable
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_load_limit
+            data:
+              option: Zero Export
+        alias: Max use
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.p_batt_forecast
+            above: 1
+          - condition: numeric_state
+            entity_id: sensor.p_grid_forecast
+            below: -1
+        sequence:
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_prog1_charge
+                - select.inverter_prog2_charge
+                - select.inverter_prog3_charge
+                - select.inverter_prog4_charge
+                - select.inverter_prog5_charge
+                - select.inverter_prog6_charge
+            data:
+              option: No Grid or Gen
+          - service: number.set_value
+            data:
+              value: "13"
+            target:
+              entity_id:
+                - number.inverter_prog1_capacity
+                - number.inverter_prog2_capacity
+                - number.inverter_prog3_capacity
+                - number.inverter_prog4_capacity
+                - number.inverter_prog5_capacity
+                - number.inverter_prog6_capacity
+          - service: number.set_value
+            target:
+              entity_id:
+                - number.inverter_prog1_power
+                - number.inverter_prog2_power
+                - number.inverter_prog3_power
+                - number.inverter_prog4_power
+                - number.inverter_prog5_power
+                - number.inverter_prog6_power
+            data:
+              value: "{{ states('sensor.p_batt_forecast')|float(0)|abs }}"
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_grid_peak_shaving
+            data:
+              option: Disable
+          - service: select.select_option
+            target:
+              entity_id:
+                - select.inverter_load_limit
+            data:
+              option: Allow Export
+        alias: Sell
+mode: single
