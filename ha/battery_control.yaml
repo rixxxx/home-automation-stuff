@@ -7,7 +7,10 @@ trigger:
   - platform: state
     entity_id:
       - sensor.p_grid_forecast
-condition: []
+condition:
+  - condition: state
+    entity_id: sensor.optim_status
+    state: Optimal
 action:
   - choose:
       - conditions:
