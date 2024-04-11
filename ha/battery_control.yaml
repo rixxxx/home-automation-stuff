@@ -63,7 +63,13 @@ action:
                 - select.inverter_load_limit
             data:
               option: Zero Export
-        alias: PV Charge
+          - service: input_text.set_value
+            metadata: {}
+            data:
+              value: PV charge
+            target:
+              entity_id: input_text.batt_mode
+        alias: PV charge
       - conditions:
           - condition: numeric_state
             entity_id: sensor.p_batt_forecast
@@ -114,7 +120,13 @@ action:
                 - select.inverter_load_limit
             data:
               option: Zero Export
-        alias: PV Charge
+          - service: input_text.set_value
+            metadata: {}
+            data:
+              value: Grid charge
+            target:
+              entity_id: input_text.batt_mode
+        alias: Grid charge
       - conditions:
           - condition: numeric_state
             entity_id: sensor.p_batt_forecast
@@ -162,6 +174,12 @@ action:
                 - select.inverter_load_limit
             data:
               option: Zero Export
+          - service: input_text.set_value
+            metadata: {}
+            data:
+              value: Idle
+            target:
+              entity_id: input_text.batt_mode
         alias: Idle
       - conditions:
           - condition: numeric_state
@@ -221,6 +239,12 @@ action:
                 - select.inverter_load_limit
             data:
               option: Zero Export
+          - service: input_text.set_value
+            metadata: {}
+            data:
+              value: Limited use
+            target:
+              entity_id: input_text.batt_mode
         alias: Limited use
       - conditions:
           - condition: numeric_state
@@ -283,6 +307,12 @@ action:
                 - select.inverter_load_limit
             data:
               option: Zero Export
+          - service: input_text.set_value
+            metadata: {}
+            data:
+              value: Max use
+            target:
+              entity_id: input_text.batt_mode
         alias: Max use
       - conditions:
           - condition: numeric_state
@@ -337,5 +367,11 @@ action:
                 - select.inverter_load_limit
             data:
               option: Allow Export
+          - service: input_text.set_value
+            metadata: {}
+            data:
+              value: Sell
+            target:
+              entity_id: input_text.batt_mode
         alias: Sell
 mode: single
