@@ -18,7 +18,7 @@ sensor:
             "elektrilevi_88": 0.0328,
             "vat": 1.22
           } %}
-          {% if now().weekday in (5,6) or
+          {% if now().weekday in (6,0) or
                 now().hour < 7 or
                 now().hour >= 22 or
                 states('calendar.estonia') == 'on'
@@ -42,7 +42,7 @@ sensor:
             {%- set ret = namespace(all=[]) %}
             {% for i in range(np | length) %}
               {%- set now = as_timestamp(np[i].start) %}
-              {% if now|timestamp_custom('%w')|int in (5,6) or
+              {% if now|timestamp_custom('%w')|int in (6,0) or
                     now|timestamp_custom('%H')|int < 7 or
                     now|timestamp_custom('%H')|int >= 22 or
                     states('calendar.estonia') == 'on'
@@ -72,7 +72,7 @@ sensor:
             {%- set ret = namespace(all=[]) %}
             {% for i in range(np | length) %}
               {%- set now = as_timestamp(np[i].start) %}
-              {% if now|timestamp_custom('%w')|int in (5,6) or
+              {% if now|timestamp_custom('%w')|int in (6,0) or
                     now|timestamp_custom('%H')|int < 7 or
                     now|timestamp_custom('%H')|int >= 22 or
                     states('calendar.estonia') == 'on'
@@ -105,7 +105,7 @@ sensor:
             {%- set ret = namespace(all=[]) %}
             {% for i in range(np | length) %}
               {%- set now = as_timestamp(np[i].start) %}
-              {% if now|timestamp_custom('%w')|int in (5,6) or
+              {% if now|timestamp_custom('%w')|int in (6,0) or
                     now|timestamp_custom('%H')|int < 7 or
                     now|timestamp_custom('%H')|int >= 22 or
                     states('calendar.estonia') == 'on'
