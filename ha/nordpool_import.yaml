@@ -23,11 +23,11 @@ sensor:
                 now().hour >= 22 or
                 states('calendar.estonia') == 'on'
           %}
-            {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88)*s.vat %}
+            {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
           {% else %}         
-            {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev)*s.vat %}
+            {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
           {% endif %}
-          {{states('sensor.nordpool_kwh_ee_eur_97_10_0')|float+tariff}}
+          {{ (states('sensor.nordpool_kwh_ee_eur_97_10_0')|float+tariff) * s.vat }}
         attribute_templates:
           raw_today: >-
             {%- set np = state_attr('sensor.nordpool_kwh_ee_eur_97_10_0', 'raw_today') %}
@@ -47,11 +47,11 @@ sensor:
                     now|timestamp_custom('%H')|int >= 22 or
                     states('calendar.estonia') == 'on'
               %}
-                {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88)*s.vat %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
               {% else %}         
-                {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev)*s.vat %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
               {% endif %}
-              {%- set v = np[i].value + tariff %}
+              {%- set v = (np[i].value + tariff) * s.vat %}
               {%- set row = dict(
                 start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
                 end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
@@ -77,11 +77,11 @@ sensor:
                     now|timestamp_custom('%H')|int >= 22 or
                     states('calendar.estonia') == 'on'
               %}
-                {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88)*s.vat %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
               {% else %}         
-                {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev)*s.vat %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
               {% endif %}
-              {%- set v = np[i].value + tariff %}
+              {%- set v = (np[i].value + tariff) * s.vat %}
               {%- set row = dict(
                 start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
                 end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
@@ -110,11 +110,11 @@ sensor:
                     now|timestamp_custom('%H')|int >= 22 or
                     states('calendar.estonia') == 'on'
               %}
-                {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88)*s.vat %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
               {% else %}         
-                {%- set tariff = (s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev)*s.vat %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
               {% endif %}
-              {%- set v = np[i].value + tariff %}
+              {%- set v = (np[i].value + tariff) * s.vat %}
               {%- set row = dict(
                 start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
                 end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
