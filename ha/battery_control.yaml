@@ -8,9 +8,15 @@ trigger:
     entity_id:
       - sensor.p_grid_forecast
 condition:
-  - condition: state
-    entity_id: sensor.optim_status
-    state: Optimal
+  - condition: or
+    conditions:
+      - condition: state
+        entity_id: sensor.optim_status
+        state: Optimal
+        enabled: true
+      - condition: numeric_state
+        entity_id: sensor.inverter_battery_1_soc
+        below: 13
 action:
   - choose:
       - conditions:
