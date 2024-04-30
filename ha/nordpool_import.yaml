@@ -45,7 +45,7 @@ sensor:
               {% if now|timestamp_custom('%w')|int in (6,0) or
                     now|timestamp_custom('%H')|int < 7 or
                     now|timestamp_custom('%H')|int >= 22 or
-                    states('calendar.estonia') == 'on'
+                    now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
               %}
                 {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
               {% else %}         
@@ -75,7 +75,7 @@ sensor:
               {% if now|timestamp_custom('%w')|int in (6,0) or
                     now|timestamp_custom('%H')|int < 7 or
                     now|timestamp_custom('%H')|int >= 22 or
-                    states('calendar.estonia') == 'on'
+                    now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
               %}
                 {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
               {% else %}         
@@ -108,7 +108,7 @@ sensor:
               {% if now|timestamp_custom('%w')|int in (6,0) or
                     now|timestamp_custom('%H')|int < 7 or
                     now|timestamp_custom('%H')|int >= 22 or
-                    states('calendar.estonia') == 'on'
+                    now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
               %}
                 {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
               {% else %}         
