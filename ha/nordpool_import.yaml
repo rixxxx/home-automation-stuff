@@ -13,7 +13,7 @@ sensor:
           {% set s = {
             "alexela_marginaal": 0.00,
             "taastuv": 0.0105,
-            "aktsiis": 0.001,
+            "aktsiis": 0.00145,
             "elektrilevi_p2ev": 0.0567,
             "elektrilevi_88": 0.0328,
             "vat": 1.22
@@ -34,7 +34,7 @@ sensor:
             {% set s = {
               "alexela_marginaal": 0.00,
               "taastuv": 0.0105,
-              "aktsiis": 0.001,
+              "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0567,
               "elektrilevi_88": 0.0328,
               "vat": 1.22
@@ -64,7 +64,7 @@ sensor:
             {% set s = {
               "alexela_marginaal": 0.00,
               "taastuv": 0.0105,
-              "aktsiis": 0.001,
+              "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0567,
               "elektrilevi_88": 0.0328,
               "vat": 1.22
@@ -97,7 +97,7 @@ sensor:
             {% set s = {
               "alexela_marginaal": 0.00,
               "taastuv": 0.0105,
-              "aktsiis": 0.001,
+              "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0567,
               "elektrilevi_88": 0.0328,
               "vat": 1.22
