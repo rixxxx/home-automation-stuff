@@ -21,7 +21,7 @@ sensor:
           {% if now().weekday in (6,0) or
                 now().hour < 7 or
                 now().hour >= 22 or
-                states('calendar.estonia') == 'on'
+                now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
           %}
             {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
           {% else %}         
