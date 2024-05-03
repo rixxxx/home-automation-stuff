@@ -435,13 +435,13 @@ action:
               entity_id:
                 - select.inverter_grid_peak_shaving
             data:
-              option: Disable
+              option: Enable
           - service: select.select_option
             target:
               entity_id:
                 - select.inverter_load_limit
             data:
-              option: Allow Export
+              option: Zero Export
           - service: input_text.set_value
             metadata: {}
             data:
