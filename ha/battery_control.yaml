@@ -18,6 +18,11 @@ condition:
         entity_id: sensor.inverter_battery_1_soc
         below: 13
 action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
   - choose:
       - conditions:
           - condition: numeric_state
@@ -444,4 +449,4 @@ action:
             target:
               entity_id: input_text.batt_mode
         alias: PV sell
-mode: single
+mode: restart
