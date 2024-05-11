@@ -366,8 +366,7 @@ action:
                 - number.inverter_prog6_power
             data:
               value: >-
-                {{ states('sensor.p_grid_forecast')|float(0)|abs +
-                states('sensor.p_load_forecast')|float(0)|abs}}
+                {{ states('sensor.p_batt_forecast')|float(0)|abs}}
           - service: select.select_option
             target:
               entity_id:
