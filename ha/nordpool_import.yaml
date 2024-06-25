@@ -51,12 +51,14 @@ sensor:
               {% else %}         
                 {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
               {% endif %}
-              {%- set v = (np[i].value + tariff) * s.vat %}
-              {%- set row = dict(
-                start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
-                end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
-                value=v) %}
-              {%- set ret.all = ret.all + [ row ] %}
+              {% if np[i].value is number %}
+                {%- set v = (np[i].value + tariff) * s.vat %}
+                {%- set row = dict(
+                  start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  value=v) %}
+                {%- set ret.all = ret.all + [ row ] %}
+              {% endif %}
             {%- endfor %}
             {{ ret.all }}
           raw_tomorrow: >-
@@ -81,12 +83,14 @@ sensor:
               {% else %}         
                 {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
               {% endif %}
-              {%- set v = (np[i].value + tariff) * s.vat %}
-              {%- set row = dict(
-                start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
-                end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
-                value=v) %}
-              {%- set ret.all = ret.all + [ row ] %}
+              {% if np[i].value is number %}
+                {%- set v = (np[i].value + tariff) * s.vat %}
+                {%- set row = dict(
+                  start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  value=v) %}
+                {%- set ret.all = ret.all + [ row ] %}
+              {% endif %}
             {%- endfor %}
             {{ ret.all }}
           raw_all: >-
@@ -114,11 +118,13 @@ sensor:
               {% else %}         
                 {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
               {% endif %}
-              {%- set v = (np[i].value + tariff) * s.vat %}
-              {%- set row = dict(
-                start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
-                end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
-                value=v) %}
-              {%- set ret.all = ret.all + [ row ] %}
+              {% if np[i].value is number %}
+                {%- set v = (np[i].value + tariff) * s.vat %}
+                {%- set row = dict(
+                  start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  value=v) %}
+                {%- set ret.all = ret.all + [ row ] %}
+              {% endif %}
             {%- endfor %}
             {{ ret.all }}
