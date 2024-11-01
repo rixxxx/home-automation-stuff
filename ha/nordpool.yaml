@@ -1,0 +1,6 @@
+sensor:
+  - platform: nordpool
+    friendly_name: Nordpool Raw
+    region: "EE"
+    precision: 97
+    VAT: False

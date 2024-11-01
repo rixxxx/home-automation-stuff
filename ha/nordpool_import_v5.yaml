@@ -1,0 +1,107 @@
+template:
+  - sensor:
+      - name: "nordpool_import"
+        state: >
+          {{ (state_attr('sensor.nordpool_import', 'raw_today') | map(attribute='value') | list)[now().hour]}}
+        attributes:
+          raw_all: >
+            {% set s = {
+              "alexela_marginaal": 0.00,
+              "taastuv": 0.0105,
+              "aktsiis": 0.00145,
+              "elektrilevi_p2ev": 0.0529,
+              "elektrilevi_p2ev_tipp": 0.0818,
+              "elektrilevi_88": 0.0303,
+              "elektrilevi_puhkep2ev_tipp": 0.0474,
+              "vat": 1.22
+            } %}
+            {%- set np = 
+              state_attr('sensor.nordpool_kwh_ee_eur_97_10_0', 'raw_today') + 
+              state_attr('sensor.nordpool_kwh_ee_eur_97_10_0', 'raw_tomorrow')
+            %}
+
+            {%- set ret = namespace(all=[]) %}
+
+            {% for i in range(np | length) %}
+              {%- set now = as_timestamp(np[i].start) %}
+
+              {# päev #}
+              {% if (
+                      now|timestamp_custom('%m')|int in range(4,11) and
+                      now|timestamp_custom('%w')|int in (1,2,3,4,5) and
+                      now|timestamp_custom('%H')|int in range(7,22)
+                    ) or (
+                      now|timestamp_custom('%m')|int in (11,12,1,2,3) and
+                      now|timestamp_custom('%w')|int in (1,2,3,4,5) and
+                      now|timestamp_custom('%H')|int in (7,8, 12,13,14,15, 20,21)                    
+                    )
+              %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev %}
+              {% endif %}
+
+              {# päev tipuaeg #}
+              {% if (
+                      now|timestamp_custom('%m')|int in (11,12,1,2,3) and
+                      now|timestamp_custom('%w')|int in (1,2,3,4,5) and
+                      now|timestamp_custom('%H')|int in (9,10,11, 16,17,18,19)                    
+                    )
+              %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_p2ev_tipp %}
+              {% endif %}
+
+              {# öö #}
+              {% if (
+                      now|timestamp_custom('%m')|int in range(4,11) and
+                      now|timestamp_custom('%w')|int in (1,2,3,4,5) and
+                      now|timestamp_custom('%H')|int in range(22,23,0,1,2,3,4,5,6)
+                    ) or (
+                      now|timestamp_custom('%m')|int in range(4,11) and
+                      (
+                        now|timestamp_custom('%w')|int in (6,0) or
+                        now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
+                      )
+                    ) or (
+                      now|timestamp_custom('%m')|int in (11,12,1,2,3) and
+                      now|timestamp_custom('%w')|int in (1,2,3,4,5) and
+                      now|timestamp_custom('%H')|int in (22,23,0,1,2,3,4,5,6)                  
+                    ) or (
+                      now|timestamp_custom('%m')|int in (11,12,1,2,3) and
+                      (
+                        now|timestamp_custom('%w')|int in (6,0) or
+                        now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
+                      ) and
+                      now|timestamp_custom('%H')|int in (20,21,22,23,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)                 
+                    )
+              %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_88 %}
+              {% endif %}
+
+            {# puhkepäeva tipuaeg #}
+              {% if (
+                      now|timestamp_custom('%m')|int in (11,12,1,2,3) and
+                      (
+                        now|timestamp_custom('%w')|int in (6,0) or
+                        now|timestamp_custom('%F') == as_timestamp(state_attr('calendar.estonia','start_time'))|timestamp_custom("%F")
+                      ) and
+                      now|timestamp_custom('%H')|int in (16,17,18,19)                 
+                    )
+              %}
+                {%- set tariff = s.alexela_marginaal+s.taastuv+s.aktsiis+s.elektrilevi_puhkep2ev_tipp %}
+              {% endif %}
+
+              {% if np[i].value is number %}
+                {%- set v = (np[i].value + tariff) * s.vat %}
+                {%- set row = dict(
+                  start=as_timestamp(np[i].start) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  end=as_timestamp(np[i].end) | timestamp_custom('%Y-%m-%dT%H:%M:%S%z'),
+                  value=v) %}
+                {%- set ret.all = ret.all + [ row ] %}
+              {% endif %}
+            {%- endfor %}
+            {{ ret.all }}
+
+          raw_today: >
+            {{ state_attr('sensor.nordpool_import', 'raw_all')[:24]}}
+
+          raw_tomorrow: >
+            {{ state_attr('sensor.nordpool_import', 'raw_all')[24:]}}
