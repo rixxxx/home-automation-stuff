@@ -6,7 +6,7 @@ sensor:
         value_template: >-
           {% set s = {
             "alexela_marginaal": 0.00,
-            "taastuv": 0.0105,
+            "taastuv": 0.0084,
             "aktsiis": 0.00145,
             "elektrilevi_p2ev": 0.0529,
             "elektrilevi_88": 0.0303,

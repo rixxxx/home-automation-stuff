@@ -7,7 +7,7 @@ template:
           raw_all: >
             {% set s = {
               "alexela_marginaal": 0.00,
-              "taastuv": 0.0105,
+              "taastuv": 0.0084,
               "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0529,
               "elektrilevi_p2ev_tipp": 0.0818,
