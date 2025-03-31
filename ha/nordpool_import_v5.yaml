@@ -53,7 +53,7 @@ template:
               {% if (
                       now|timestamp_custom('%m')|int in range(4,11) and
                       now|timestamp_custom('%w')|int in (1,2,3,4,5) and
-                      now|timestamp_custom('%H')|int in range(22,23,0,1,2,3,4,5,6)
+                      now|timestamp_custom('%H')|int in (22,23,0,1,2,3,4,5,6)
                     ) or (
                       now|timestamp_custom('%m')|int in range(4,11) and
                       (
