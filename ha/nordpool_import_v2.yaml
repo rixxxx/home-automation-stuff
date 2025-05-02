@@ -7,7 +7,7 @@ sensor:
           {% set s = {
             "alexela_marginaal": 0.00,
             "taastuv": 0.0084,
-            "aktsiis": 0.00145,
+            "aktsiis": 0.0021,
             "elektrilevi_p2ev": 0.0529,
             "elektrilevi_88": 0.0303,
             "vat": 1.22
