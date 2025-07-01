@@ -13,7 +13,7 @@ template:
               "elektrilevi_p2ev_tipp": 0.0818,
               "elektrilevi_88": 0.0303,
               "elektrilevi_puhkep2ev_tipp": 0.0474,
-              "vat": 1.22
+              "vat": 1.24
             } %}
             {%- set np = 
               state_attr('sensor.nordpool_kwh_ee_eur_97_10_0', 'raw_today') + 

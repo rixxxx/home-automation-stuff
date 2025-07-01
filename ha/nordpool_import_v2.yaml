@@ -10,7 +10,7 @@ sensor:
             "aktsiis": 0.0021,
             "elektrilevi_p2ev": 0.0529,
             "elektrilevi_88": 0.0303,
-            "vat": 1.22
+            "vat": 1.24
           } %}
           {% if now().weekday() in (5,6) or
                 now().hour < 7 or
@@ -31,7 +31,7 @@ sensor:
               "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0529,
               "elektrilevi_88": 0.0303,
-              "vat": 1.22
+              "vat": 1.24
             } %}
             {%- set ret = namespace(all=[]) %}
             {% for i in range(np | length) %}
@@ -63,7 +63,7 @@ sensor:
               "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0529,
               "elektrilevi_88": 0.0303,
-              "vat": 1.22
+              "vat": 1.24
             } %}
             {%- set ret = namespace(all=[]) %}
             {% for i in range(np | length) %}
@@ -98,7 +98,7 @@ sensor:
               "aktsiis": 0.00145,
               "elektrilevi_p2ev": 0.0529,
               "elektrilevi_88": 0.0303,
-              "vat": 1.22
+              "vat": 1.24
             } %}
             {%- set ret = namespace(all=[]) %}
             {% for i in range(np | length) %}
